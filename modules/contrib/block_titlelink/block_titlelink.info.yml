@@ -1,0 +1,12 @@
+name: 'Block Title Link'
+description: 'Allows assigning links to Block titles'
+# core: 8.x
+type: module
+dependencies:
+ - drupal:block
+
+# Information added by Drupal.org packaging script on 2018-09-25
+version: '8.x-1.x-dev'
+core: '8.x'
+project: 'block_titlelink'
+datestamp: 1537835288

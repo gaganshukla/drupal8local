@@ -1,0 +1,68 @@
+# This file brings everything together. Very nifty!
+
+# Route name can be used in several places; e.g. links, redirects, and local
+# actions.
+entity.developer_contact.canonical:
+  path: '/developer_contact/{developer_contact}'
+  defaults:
+    # Calls the view controller, defined in the annotation of the contact
+    # entity. This marks this route as belonging to this entity type.
+    _entity_view: 'developer_contact'
+    _title: 'Contact content'
+  requirements:
+    # Calls the access controller of the entity, passing in the suffix ('view')
+    # as the $operation parameter to checkAccess().
+    _entity_access: 'developer_contact.view'
+
+entity.developer_contact.collection:
+  path: '/developer_contact/list'
+  defaults:
+  # Calls the list controller, defined in the annotation of the contact entity.
+    _entity_list: 'developer_contact'
+    _title: 'Contact list'
+  requirements:
+  # Checks for permission directly.
+    _permission: 'view contact entity'
+
+content_developer.contact_add:
+  path: '/developer_contact/add'
+  defaults:
+    # Calls the form.add controller, defined in the contact entity.
+    _entity_form: developer_contact.default
+    _title: 'Add contact'
+  requirements:
+    # Use the entity's access controller. _entity_create_access tells the router
+    # to use the access controller's checkCreateAccess() method instead of
+    # checkAccess().
+    _entity_create_access: 'developer_contact'
+
+entity.developer_contact.edit_form:
+  path: '/developer_contact/{developer_contact}/edit'
+  defaults:
+  # Calls the form.edit controller, defined in the contact entity.
+    _entity_form: content_developer.default
+    _title: 'Edit contact'
+  requirements:
+    # Calls the access controller of the entity, passing in the suffix
+    # ('update') as the $operation parameter to checkAccess().
+    _entity_access: 'content_developer.update'
+
+entity.developer_contact.delete_form:
+  path: '/contact/{developer_contact}/delete'
+  defaults:
+    # Calls the form.delete controller, defined in the contact entity.
+    _entity_form: content_developer.delete
+    _title: 'Delete contact'
+  requirements:
+    # Calls the access controller of the entity, passing in the suffix
+    # ('delete') as the $operation parameter to checkAccess().
+    _entity_access: 'content_developer.delete'
+
+content_developer_settings:
+  path: '/admin/structure/developer_contact_settings'
+  defaults:
+    _form: '\Drupal\developer\Form\ContactSettingsForm'
+    _title: 'Contact settings'
+  requirements:
+    _permission: 'administer contact entity'
+

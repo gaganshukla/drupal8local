@@ -1,0 +1,249 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display the basic html structure of a single
+ * Drupal page.
+ *
+ * Variables:
+ * - $css: An array of CSS files for the current page.
+ * - $language: (object) The language the site is being displayed in.
+ *   $language->language contains its textual representation.
+ *   $language->dir contains the language direction. It will either be 'ltr' or
+ *   'rtl'.
+ * - $rdf_namespaces: All the RDF namespace prefixes used in the HTML document.
+ * - $grddl_profile: A GRDDL profile allowing agents to extract the RDF data.
+ * - $head_title: A modified version of the page title, for use in the TITLE
+ *   tag.
+ * - $head_title_array: (array) An associative array containing the string parts
+ *   that were used to generate the $head_title variable, already prepared to be
+ *   output as TITLE tag. The key/value pairs may contain one or more of the
+ *   following, depending on conditions:
+ *   - title: The title of the current page, if any.
+ *   - name: The name of the site.
+ *   - slogan: The slogan of the site, if any, and if there is no title.
+ * - $head: Markup for the HEAD section (including meta tags, keyword tags, and
+ *   so on).
+ * - $styles: Style tags necessary to import all CSS files for the page.
+ * - $scripts: Script tags necessary to load the JavaScript files and settings
+ *   for the page.
+ * - $page_top: Initial markup from any modules that have altered the
+ *   page. This variable should always be output first, before all other dynamic
+ *   content.
+ * - $page: The rendered page content.
+ * - $page_bottom: Final closing markup from any modules that have altered the
+ *   page. This variable should always be output last, after all other dynamic
+ *   content.
+ * - $classes String of classes that can be used to style contextually through
+ *   CSS.
+ *
+ * @ingroup templates
+ *
+ * @see bootstrap_preprocess_html()
+ * @see template_preprocess()
+ * @see template_preprocess_html()
+ * @see template_process()
+ */
+#}
+{% set body_classes = [
+    logged_in ? 'user-logged-in',
+    not root_path ? 'path-frontpage' : 'path-' ~ root_path|clean_class,
+    node_type ? 'page-node-type-' ~ node_type|clean_class,
+    db_offline ? 'db-offline',
+    theme.settings.navbar_position ? 'navbar-is-' ~ theme.settings.navbar_position,
+    theme.has_glyphicons ? 'has-glyphicons',
+] %}
+<!DOCTYPE html>
+<html {{ html_attributes }}>
+<head>
+    <meta content="IE=edge" httpEquiv="X-UA-Compatible"/>
+    <meta charSet="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link href="http://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet"
+          type="text/css"/>
+    <!-- todo: download slider assets & adapt links  -->
+    <link rel="stylesheet"
+          href="https://unpkg.com/flickity@2/dist/flickity.min.css"/>
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    {#<script type="text/javascript"#}
+    {#src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>#}
+    <head-placeholder token="{{ placeholder_token|raw }}">
+        <title>{{ head_title|safe_join(' | ') }}</title>
+        <css-placeholder token="{{ placeholder_token|raw }}">
+            <js-placeholder token="{{ placeholder_token|raw }}">
+                </head>
+<body>
+{{ page_top }}
+<!--start Mobile navigation menu-->
+<nav id="menu">
+    <header>
+        <div class="hide-on-not-mobile mobile-menu slideout-menu">
+            <a href="/">
+                <img class="mobile-menu__logo" src="/themes/silbury/img/publicare-logo.png" alt="Publicare Logo"/>
+            </a>
+            <ul>
+                <li>
+                    <a class="mobile-menu__link --more" href="#">Startseite</a>
+                </li>
+                {{ mobile_menu }}
+                <li class="mobile-has-submenu">
+                    {#{{ get_base_url }}/{{ language }}/products#}
+                    <a class="mobile-menu__link --more" href="#">Alle Produkte</a>
+                    <ul>
+                        <li>
+                            {#pas{{ main_menu }}#}
+                            {#{{ user_account_menu }}#}
+                            {#service {{ mob_submenu_service_cat }}#}
+                            {#product {{ mob_submenu_prod_cat }}#}
+                            <a class="mobile-menu__link"
+                               href="http://publicareteste6avjzgc3t.devcloud.acquia-sites.com/product/Inkontinenz">Inkontinenz</a>
+                        </li>
+                        <li>
+                            <a class="mobile-menu__link" href="#">Stoma-Versorgung</a>
+                        </li>
+                        <li>
+                            <a class="mobile-menu__link" href="#">Tracheostoma</a>
+                        </li>
+                        <li>
+                            <a class="mobile-menu__link" href="#">Wundversorgung</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="mobile-has-submenu">
+                    <a class="mobile-menu__link --more" href="#">Dienstleistungen</a>
+                    <ul>
+                        <li>
+                            <a class="mobile-menu__link" href="#">Beratung</a>
+                        </li>
+                        <li>
+                            <a class="mobile-menu__link" href="#">Lieferant</a>
+                        </li>
+                        <li>
+                            <a class="mobile-menu__link" href="#">Partner</a>
+                        </li>
+                        <li>
+                            <a class="mobile-menu__link" href="#">Wissen und Weiterbildung</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="mobile-menu__link --more" href="#">Publicare Academy</a>
+                </li>
+            </ul>
+        </div>
+    </header>
+</nav>
+
+<!--End Mobile navigation menu-->
+
+<main id="panel">
+
+    {# Navbar #}
+
+    pasha111:::{{ current_path }}<br>
+    222222222:::: {{ current_uri }}<br>
+    33333333:::: {{ route_name }}<br>
+    get base11::: {{ get_base_url }}<br>
+    language:::: {{ language }}
+    {#1233:{{ path('entity.user.canonical', {'user': user.id}, {}) }}<br>#}
+    {#111111:{{ user.name.0.value }}<br>#}
+    {#222222:{{ username }}<br>#}
+    {#333333:{{ host_pub }}<br>#}
+    {#5555555: {{ product_category_name }}#}
+
+
+    {#$host = \Drupal::request()->getSchemeAndHttpHost();#}
+    <div class="close-nav-mobile" >
+        <img src="/themes/silbury/img/icon/close-nav-mobile.svg" alt="bars">
+    </div>
+
+    <div class="top-notification">{{ 'Publicare noch bis 18 Uhr geöffnet.'|t }}</div>
+    <header class="header" id="header">
+        <div class="wrap">
+
+            {{ page.navigation }}
+            <span class="hide-on-not-mobile">
+                <a class="button button--login" href="#"><svg
+                            class="button--login__icon"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path
+                                fill="currentColor"
+                                d="M8 256C8 119.033 119.033 8 256 8s248 111.033 248 248-111.033 248-248 248S8 392.967 8 256zm72.455 125.868C119.657 436.446 183.673 472 256 472s136.343-35.554 175.545-90.132c-3.141-26.99-22.667-49.648-49.538-56.366l-32.374-8.093C323.565 339.79 290.722 352 256 352s-67.565-12.21-93.634-34.591l-32.374 8.093c-26.87 6.718-46.396 29.376-49.537 56.366zM144 208c0 61.856 50.144 112 112 112s112-50.144 112-112S317.856 96 256 96s-112 50.144-112 112z"/></svg> <span
+                            class="button--login__text">Anmelden</span></a>
+      </span>
+        </div>
+    </header>
+
+
+    {{ page }}
+    {{ page_contactbox }}
+    {{ footer }}
+</main>
+</body>
+
+<script src="https://unpkg.com/babel-polyfill@6.26.0/dist/polyfill.min.js"></script>
+<js-bottom-placeholder token="{{ placeholder_token|raw }}">
+    <script>
+      //Signup
+      factory.render(
+          document.getElementById("SignUp"),
+          Unchained.Components.SignUpForm,
+          {
+            onSuccess: function () {
+              alert('success');
+              //getting URL to redirect to home page
+              var url = window.location.pathname.split("/")[2];
+              console.log("Message from href url for webportal login " + url);
+              var loadstr = window.location.href.replace("signup", "portal-log-in");
+              window.location.assign(loadstr);
+            }
+          }
+      );
+    </script>
+    <script>//Forgot password
+      factory.render(
+          document.getElementById("ForgotPassword"),
+          Unchained.Components.ForgotPasswordForm,
+          {
+            onSuccess: function () {
+              alert('success');
+            }
+          }
+      );
+
+    </script>
+    <script>
+
+      // Display accordian and tab on service landing page.
+      jQuery(".faq-accordion-box .item").eq(1).addClass('active');
+      var input = document.getElementById("edit-mail-0-value");
+      //input.placeholder = "E-Mail";
+      jQuery('.faq-accordion-box .item .ques').click(function () {
+        jQuery(this).parents('.item').toggleClass('active');
+        //jQuery(this).parents('.faq-accordion-box').find('.active').siremoveClass('active');
+      });
+
+
+      function set_height_slider() {
+        var initialize_height = jQuery(".tabs-area .tab-boxes").find(".tab-box:eq(0)").innerHeight();
+        jQuery(".tabs-area .tab-boxes").height(initialize_height + "px");
+        jQuery(document).on("click", ".tabs-nav a", function () {
+          var numberIndex = jQuery(this).index();
+          if (!jQuery(this).is("active")) {
+            jQuery(".tabs-nav a").removeClass("is-active");
+            jQuery(".tab-boxes .tab-box").removeClass("active");
+            jQuery(this).addClass("is-active");
+            jQuery(".tab-boxes").find(".tab-box:eq(" + numberIndex + ")").addClass("active");
+            var listItemHeight = jQuery(".tabs-area .tab-boxes").find(".tab-box:eq(" + numberIndex + ")").innerHeight();
+            jQuery(".tabs-area .tab-boxes").height(listItemHeight + "px");
+          }
+          return false;
+        });
+      }
+
+      set_height_slider();
+      $(window).resize(function () {
+        height_slider_resize = jQuery('.tab-box.active .service-slide.is-selected').height() + 60;
+        jQuery(".tabs-area .tab-boxes").height(height_slider_resize + "px");
+      });
+    </script>
+</html>
